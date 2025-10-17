@@ -1,5 +1,5 @@
 {
-  "name": "puelpan-claude-plugins",
+  "name": "puelpan-claude",
   "owner": {
     "name": "Juan Puelpan",
     "email": "juan@puelpan.com"
@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "github",
-      "source": "./plugins/github",
+      "source": "./github",
       "description": "Git and Github utility commands",
       "version": "1.0.0",
       "author": {
