@@ -1,14 +1,14 @@
 {
-  "name": "puelpan-claude",
+  "name": "puelpan",
   "owner": {
     "name": "Juan Puelpan",
     "email": "juan@puelpan.com"
   },
   "plugins": [
     {
-      "name": "github",
-      "source": "./github",
-      "description": "Git and Github utility commands",
+      "name": "development",
+      "source": "./development",
+      "description": "Development utility commands",
       "version": "1.0.0",
       "author": {
         "name": "Juan Puelpan"

@@ -1,4 +1,4 @@
-# Excecute plan
+# Execute plan
 
 Execute a plan from GitHub issue or comment: $ARGUMENTS
 
