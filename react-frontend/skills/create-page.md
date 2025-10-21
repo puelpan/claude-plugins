@@ -27,12 +27,15 @@ When the user requests to create a page:
    - Check available shadcn/ui components
 
 3. **Create the Page Route File**
-   - Use TanStack Router file-based routing conventions
+   - Use TanStack Router flat file-based routing conventions
    - Create route file in the appropriate location:
-     - `routes/index.tsx` for home page
+     - `routes/index.tsx` for home page (/)
      - `routes/about.tsx` for /about
-     - `routes/users/$userId.tsx` for dynamic routes
-     - `routes/posts.index.tsx` and `routes/posts.$postId.tsx` for nested routes
+     - `routes/users.index.tsx` for /users
+     - `routes/users.$userId.tsx` for /users/123
+     - `routes/posts.index.tsx` for /posts
+     - `routes/posts.$postId.tsx` for /posts/456
+     - `routes/posts.$postId.edit.tsx` for /posts/456/edit
 
 4. **Implement Route Configuration**
    ```typescript
@@ -159,7 +162,7 @@ function About() {
 
 ### Route with Loader
 ```typescript
-// routes/users/$userId.tsx
+// routes/users.$userId.tsx
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/users/$userId')({
@@ -248,22 +251,26 @@ Common shadcn/ui components for pages:
 5. Verify accessibility with keyboard navigation
 6. Test error states and loading states
 
-## Example File Structure
+## Example File Structure (Flat Routes)
 
 ```
 src/
   routes/
-    index.tsx                 # Home page (/)
-    about.tsx                 # About page (/about)
-    users/
-      index.tsx              # Users list (/users)
-      $userId.tsx            # User detail (/users/123)
-    products/
-      index.tsx              # Products list (/products)
-      $productId/
-        index.tsx            # Product detail (/products/456)
-        edit.tsx             # Edit product (/products/456/edit)
+    index.tsx                        # Home page (/)
+    about.tsx                        # About page (/about)
+    users.index.tsx                  # Users list (/users)
+    users.$userId.tsx                # User detail (/users/123)
+    products.index.tsx               # Products list (/products)
+    products.$productId.index.tsx    # Product detail (/products/456)
+    products.$productId.edit.tsx     # Edit product (/products/456/edit)
 ```
+
+**Flat Routes Naming Convention:**
+- Use dots (`.`) to denote path segments instead of folders
+- `users.index.tsx` creates the `/users` route
+- `users.$userId.tsx` creates the `/users/:userId` route
+- `posts.$postId.edit.tsx` creates the `/posts/:postId/edit` route
+- This keeps all route files in a single directory for easier navigation
 
 ## Common Questions to Ask
 
