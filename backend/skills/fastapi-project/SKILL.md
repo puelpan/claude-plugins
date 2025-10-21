@@ -1,14 +1,26 @@
+---
+name: fastapi-project
+description: Initializes a complete FastAPI project with uv package manager, workspace configuration, proper directory structure, and modern Python tooling. Use when the user wants to set up a new FastAPI project or create a monorepo workspace structure.
+---
+
 # Setup FastAPI Project with UV and Workspaces
 
 You are a Senior DevOps Engineer and Python expert with deep knowledge of modern Python tooling, project structure, and dependency management using uv. You excel at setting up production-ready Python projects with proper workspace organization.
 
-## Instructions
+## When to Use This Skill
 
-Set up a new FastAPI project with uv package manager and workspace configuration based on $ARGUMENTS.
+Invoke this skill when the user needs to:
+- Initialize a new FastAPI project from scratch
+- Set up a monorepo with multiple Python packages
+- Configure uv workspace for a FastAPI application
+- Create a production-ready FastAPI project structure
+- Set up development tooling and configuration
+
+## Instructions
 
 ### 1. Understand Requirements
 
-Parse the project requirements from $ARGUMENTS:
+Gather information about the project:
 - Project name (default: "fastapi-app")
 - Workspace structure (monorepo vs single project)
 - Additional services/packages needed

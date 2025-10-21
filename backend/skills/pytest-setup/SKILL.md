@@ -1,14 +1,27 @@
+---
+name: pytest-setup
+description: Sets up comprehensive pytest testing infrastructure for FastAPI applications including fixtures, factories, test database configuration, and CI/CD integration. Use when the user needs to add testing capabilities to their FastAPI project.
+---
+
 # Setup Test Environment for FastAPI
 
 You are a Senior QA Engineer and Python testing expert with deep knowledge of pytest, FastAPI testing patterns, test-driven development, and CI/CD best practices. You excel at setting up comprehensive test environments for backend applications.
 
-## Instructions
+## When to Use This Skill
 
-Set up a complete testing infrastructure for a FastAPI application based on $ARGUMENTS.
+Invoke this skill when the user needs to:
+- Set up testing infrastructure for a new or existing FastAPI project
+- Add pytest configuration and test fixtures
+- Configure test database and factories
+- Set up test coverage reporting
+- Integrate tests with CI/CD pipelines
+- Create test directory structure
+
+## Instructions
 
 ### 1. Understand Requirements
 
-Parse testing requirements from $ARGUMENTS:
+Gather information about testing needs:
 - Test types needed (unit, integration, e2e)
 - Database testing strategy (test DB, fixtures, factories)
 - Authentication testing needs
@@ -55,30 +68,7 @@ uv sync --extra test
 
 ### 4. Create Test Configuration
 
-**pytest.ini** (or add to pyproject.toml):
-```ini
-[pytest]
-testpaths = tests
-python_files = test_*.py
-python_classes = Test*
-python_functions = test_*
-asyncio_mode = auto
-addopts =
-    -v
-    --strict-markers
-    --cov=app
-    --cov=core
-    --cov-report=html
-    --cov-report=term-missing
-    --cov-fail-under=80
-markers =
-    unit: Unit tests
-    integration: Integration tests
-    e2e: End-to-end tests
-    slow: Slow running tests
-```
-
-Or in **pyproject.toml**:
+Add to **pyproject.toml**:
 ```toml
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -276,15 +266,6 @@ class TestUserSchemas:
                 username="testuser",
                 password="password123"
             )
-
-    def test_user_response_excludes_password(self):
-        """Test that password is excluded from response."""
-        user = UserResponse(
-            id=1,
-            email="test@example.com",
-            username="testuser"
-        )
-        assert not hasattr(user, 'password')
 ```
 
 **tests/integration/test_api.py**:
@@ -309,48 +290,10 @@ class TestUserAPI:
         assert data["username"] == "newuser"
         assert "password" not in data
 
-    def test_create_user_duplicate_email(self, client, db_session):
-        """Test creating user with duplicate email."""
-        # Create first user
-        client.post("/api/v1/users/", json={
-            "email": "duplicate@example.com",
-            "username": "user1",
-            "password": "password123"
-        })
-
-        # Attempt to create duplicate
-        response = client.post("/api/v1/users/", json={
-            "email": "duplicate@example.com",
-            "username": "user2",
-            "password": "password456"
-        })
-        assert response.status_code == status.HTTP_409_CONFLICT
-
-    def test_get_user_by_id(self, client):
-        """Test retrieving user by ID."""
-        # Create user
-        create_response = client.post("/api/v1/users/", json={
-            "email": "getuser@example.com",
-            "username": "getuser",
-            "password": "password123"
-        })
-        user_id = create_response.json()["id"]
-
-        # Get user
-        response = client.get(f"/api/v1/users/{user_id}")
-        assert response.status_code == status.HTTP_200_OK
-        assert response.json()["id"] == user_id
-
     def test_get_user_not_found(self, client):
         """Test getting non-existent user."""
         response = client.get("/api/v1/users/99999")
         assert response.status_code == status.HTTP_404_NOT_FOUND
-
-    @pytest.mark.asyncio
-    async def test_protected_endpoint_requires_auth(self, client):
-        """Test that protected endpoints require authentication."""
-        response = client.get("/api/v1/users/me")
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_protected_endpoint_with_auth(self, client, auth_headers):
         """Test protected endpoint with valid authentication."""
@@ -358,79 +301,7 @@ class TestUserAPI:
         assert response.status_code == status.HTTP_200_OK
 ```
 
-**tests/unit/test_services.py**:
-```python
-import pytest
-from unittest.mock import Mock, patch
-
-from core.services.user_service import UserService
-from core.schemas.user import UserCreate
-from tests.factories.user_factory import UserFactory
-
-
-class TestUserService:
-    """Test user service business logic."""
-
-    @pytest.fixture
-    def user_service(self):
-        """Create user service instance."""
-        return UserService()
-
-    def test_create_user_hashes_password(self, user_service):
-        """Test that password is hashed during user creation."""
-        user_data = UserCreate(
-            email="test@example.com",
-            username="testuser",
-            password="plaintext_password"
-        )
-
-        with patch.object(user_service, 'repository') as mock_repo:
-            mock_repo.create.return_value = UserFactory.build()
-            user = user_service.create_user(user_data)
-
-            # Verify password was hashed
-            call_args = mock_repo.create.call_args[0][0]
-            assert call_args.password != "plaintext_password"
-
-    def test_get_user_by_email(self, user_service):
-        """Test retrieving user by email."""
-        expected_user = UserFactory.build(email="find@example.com")
-
-        with patch.object(user_service, 'repository') as mock_repo:
-            mock_repo.get_by_email.return_value = expected_user
-            user = user_service.get_by_email("find@example.com")
-
-            assert user.email == "find@example.com"
-            mock_repo.get_by_email.assert_called_once_with("find@example.com")
-```
-
-### 9. Create Test Helper Utilities
-
-**tests/utils.py**:
-```python
-from typing import Dict, Any
-from faker import Faker
-
-fake = Faker()
-
-
-def create_random_user_data() -> Dict[str, Any]:
-    """Generate random user data for testing."""
-    return {
-        "email": fake.email(),
-        "username": fake.user_name(),
-        "password": fake.password(length=12)
-    }
-
-
-def assert_validation_error(response, field: str):
-    """Assert that response contains validation error for specific field."""
-    assert response.status_code == 422
-    errors = response.json()["detail"]
-    assert any(error["loc"][-1] == field for error in errors)
-```
-
-### 10. CI/CD Integration
+### 9. CI/CD Integration
 
 **GitHub Actions (.github/workflows/test.yml)**:
 ```yaml
@@ -473,7 +344,7 @@ jobs:
         fail_ci_if_error: true
 ```
 
-### 11. Run Tests
+### 10. Run Tests
 
 Create convenience scripts in **pyproject.toml**:
 ```toml
@@ -483,7 +354,6 @@ scripts = {
     test-unit = "pytest tests/unit -m unit",
     test-integration = "pytest tests/integration -m integration",
     test-cov = "pytest --cov --cov-report=html --cov-report=term",
-    test-watch = "pytest-watch"
 }
 ```
 
@@ -500,9 +370,6 @@ uv run pytest --cov --cov-report=html
 
 # Parallel execution
 uv run pytest -n auto
-
-# Watch mode (requires pytest-watch)
-uv run ptw
 ```
 
 ## Deliverables
@@ -516,8 +383,7 @@ Execute the following:
 5. Create test data factories
 6. Generate example tests (unit, integration)
 7. Set up CI/CD workflow (if requested)
-8. Create test utilities and helpers
-9. Install dependencies and run initial test
+8. Install dependencies and run initial test
 
 ## On Completion
 

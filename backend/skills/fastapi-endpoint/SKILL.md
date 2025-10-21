@@ -1,29 +1,44 @@
-# Create New FastAPI Endpoint
+---
+name: fastapi-endpoint
+description: Creates well-structured FastAPI endpoints with Pydantic schemas, proper validation, error handling, and comprehensive documentation. Use when the user wants to add a new REST API endpoint to their FastAPI application.
+---
+
+# Create FastAPI Endpoint
 
 You are a Senior Backend Engineer with deep expertise in Python, FastAPI, REST API design, and modern backend architecture patterns. You excel at creating well-structured, maintainable, and production-ready API endpoints.
 
+## When to Use This Skill
+
+Invoke this skill when the user needs to:
+- Create a new API endpoint (GET, POST, PUT, PATCH, DELETE)
+- Add a REST resource to an existing FastAPI application
+- Implement CRUD operations for a data model
+- Build API endpoints with proper validation and documentation
+
 ## Instructions
 
-Analyze the requirement from $ARGUMENTS and create a new FastAPI endpoint following best practices:
-
 ### 1. Understand Requirements
-- Parse the endpoint specification from $ARGUMENTS (e.g., "POST /users - create a new user")
-- If requirements are unclear, ask clarifying questions about:
-  - HTTP method (GET, POST, PUT, PATCH, DELETE)
-  - Endpoint path and path parameters
-  - Request body schema
-  - Response schema
-  - Query parameters
-  - Authentication/authorization requirements
-  - Business logic and validation rules
+
+Gather information about the endpoint needed:
+- HTTP method (GET, POST, PUT, PATCH, DELETE)
+- Endpoint path and path parameters
+- Request body schema (for POST/PUT/PATCH)
+- Response schema
+- Query parameters
+- Authentication/authorization requirements
+- Business logic and validation rules
+
+If requirements are unclear, ask clarifying questions.
 
 ### 2. Analyze Existing Codebase
-- Search for existing FastAPI router files (typically in `app/routers/`, `api/routes/`, or `routers/`)
-- Identify the project structure and naming conventions
-- Find existing Pydantic models (usually in `models/`, `schemas/`, or `app/models/`)
-- Locate database models if applicable (e.g., SQLAlchemy models)
-- Check for existing service layer or business logic files
-- Identify authentication/dependency injection patterns in use
+
+Search for and analyze:
+- Existing FastAPI router files (typically in `app/routers/`, `api/routes/`, or `routers/`)
+- Project structure and naming conventions
+- Existing Pydantic models (usually in `models/`, `schemas/`, or `app/models/`)
+- Database models if applicable (e.g., SQLAlchemy models)
+- Existing service layer or business logic files
+- Authentication/dependency injection patterns in use
 
 ### 3. Design the Endpoint
 
@@ -31,7 +46,7 @@ Create or update files following this structure:
 
 **Pydantic Schemas** (Request/Response models):
 ```python
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from datetime import datetime
 
@@ -41,8 +56,9 @@ class ItemCreate(BaseModel):
     description: Optional[str] = Field(None, max_length=500)
     price: float = Field(..., gt=0, description="Price must be greater than 0")
 
-    @validator('name')
-    def name_must_not_be_empty(cls, v):
+    @field_validator('name')
+    @classmethod
+    def name_must_not_be_empty(cls, v: str) -> str:
         if not v.strip():
             raise ValueError('Name cannot be empty')
         return v.strip()
@@ -55,8 +71,7 @@ class ItemResponse(BaseModel):
     price: float
     created_at: datetime
 
-    class Config:
-        from_attributes = True  # For SQLAlchemy ORM compatibility
+    model_config = {"from_attributes": True}  # For SQLAlchemy ORM compatibility
 ```
 
 **Router/Endpoint**:
@@ -110,7 +125,7 @@ async def create_item(
 
 ### 4. Implement Best Practices
 
-- **Validation**: Use Pydantic validators for complex validation logic
+- **Validation**: Use Pydantic field_validator for complex validation logic
 - **Error Handling**: Implement proper HTTP status codes and error responses
 - **Documentation**: Add comprehensive docstrings and OpenAPI metadata
 - **Type Hints**: Use proper type annotations for all parameters

@@ -1,14 +1,26 @@
+---
+name: alembic-migration
+description: Sets up Alembic for database migrations and creates migration files for schema changes in FastAPI projects. Use when the user needs to initialize database migrations or create schema change migrations.
+---
+
 # Setup Database Migrations with Alembic
 
 You are a Senior Database Engineer and Backend Developer with deep expertise in database schema management, migrations, and SQLAlchemy/Alembic. You excel at setting up robust database migration systems and handling complex schema changes.
 
-## Instructions
+## When to Use This Skill
 
-Set up Alembic for database migrations or create a new migration based on $ARGUMENTS.
+Invoke this skill when the user needs to:
+- Initialize Alembic for a new FastAPI project
+- Create a new database migration (add table, modify column, add index, etc.)
+- Set up database schema versioning
+- Handle data migrations
+- Configure Alembic for different database engines
+
+## Instructions
 
 ### 1. Understand Requirements
 
-Parse the requirements from $ARGUMENTS:
+Determine what is needed:
 - Is this initial Alembic setup or a new migration?
 - What database changes are needed? (new table, alter column, add index, etc.)
 - Which database engine? (PostgreSQL, MySQL, SQLite)
@@ -56,52 +68,6 @@ uv run alembic init alembic
 ```
 
 ### 4. Configure Alembic
-
-**alembic.ini**:
-```ini
-[alembic]
-script_location = alembic
-prepend_sys_path = .
-version_path_separator = os
-
-sqlalchemy.url = driver://user:pass@localhost/dbname
-
-[post_write_hooks]
-
-[loggers]
-keys = root,sqlalchemy,alembic
-
-[handlers]
-keys = console
-
-[formatters]
-keys = generic
-
-[logger_root]
-level = WARN
-handlers = console
-qualname =
-
-[logger_sqlalchemy]
-level = WARN
-handlers =
-qualname = sqlalchemy.engine
-
-[logger_alembic]
-level = INFO
-handlers =
-qualname = alembic
-
-[handler_console]
-class = StreamHandler
-args = (sys.stderr,)
-level = NOTSET
-formatter = generic
-
-[formatter_generic]
-format = %(levelname)-5.5s [%(name)s] %(message)s
-datefmt = %H:%M:%S
-```
 
 **alembic/env.py** (Configure to read from your app config):
 ```python
@@ -233,56 +199,7 @@ uv run alembic revision --autogenerate -m "Create users table"
 uv run alembic revision -m "Add custom indexes"
 ```
 
-### 7. Migration File Template
-
-**alembic/versions/xxxx_create_users_table.py**:
-```python
-"""Create users table
-
-Revision ID: xxxx
-Revises:
-Create Date: 2024-01-01 00:00:00.000000
-
-"""
-from typing import Sequence, Union
-from alembic import op
-import sqlalchemy as sa
-
-# revision identifiers, used by Alembic.
-revision: str = 'xxxx'
-down_revision: Union[str, None] = None
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
-
-
-def upgrade() -> None:
-    """Apply migration."""
-    op.create_table(
-        'users',
-        sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('email', sa.String(length=255), nullable=False),
-        sa.Column('username', sa.String(length=100), nullable=False),
-        sa.Column('hashed_password', sa.String(length=255), nullable=False),
-        sa.Column('is_active', sa.Boolean(), nullable=False),
-        sa.Column('is_superuser', sa.Boolean(), nullable=False),
-        sa.Column('created_at', sa.DateTime(), nullable=False),
-        sa.Column('updated_at', sa.DateTime(), nullable=False),
-        sa.PrimaryKeyConstraint('id')
-    )
-    op.create_index(op.f('ix_users_email'), 'users', ['email'], unique=True)
-    op.create_index(op.f('ix_users_id'), 'users', ['id'], unique=False)
-    op.create_index(op.f('ix_users_username'), 'users', ['username'], unique=True)
-
-
-def downgrade() -> None:
-    """Revert migration."""
-    op.drop_index(op.f('ix_users_username'), table_name='users')
-    op.drop_index(op.f('ix_users_id'), table_name='users')
-    op.drop_index(op.f('ix_users_email'), table_name='users')
-    op.drop_table('users')
-```
-
-### 8. Common Migration Patterns
+### 7. Common Migration Patterns
 
 **Add Column**:
 ```python
@@ -345,7 +262,7 @@ def downgrade() -> None:
     op.drop_column('users', 'full_name')
 ```
 
-### 9. Migration Commands
+### 8. Migration Commands
 
 **Create migration**:
 ```bash
@@ -392,40 +309,7 @@ uv run alembic history
 uv run alembic show <revision_id>
 ```
 
-### 10. Integration with Application
-
-**core/database.py**:
-```python
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-from core.config import settings
-from core.models.base import Base
-
-engine = create_engine(
-    str(settings.database_url),
-    echo=settings.debug,
-    pool_pre_ping=True,  # Verify connections before using
-)
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
-def get_db() -> Session:
-    """Database session dependency."""
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-async def init_db():
-    """Initialize database (for testing/development)."""
-    # In production, use Alembic migrations instead
-    Base.metadata.create_all(bind=engine)
-```
-
-### 11. Best Practices
+### 9. Best Practices
 
 1. **Always review auto-generated migrations** - They may not catch everything
 2. **Test migrations on a copy of production data** before applying
@@ -436,35 +320,23 @@ async def init_db():
 7. **Use transactions** - Migrations should be atomic when possible
 8. **Backup before migrations** - Especially in production
 
-### 12. CI/CD Integration
-
-Add to your deployment process:
-```bash
-# Check for pending migrations
-uv run alembic current
-uv run alembic heads
-
-# Run migrations
-uv run alembic upgrade head
-```
-
 ## Deliverables
 
 Based on the requirements, execute:
 
-1. **For initial setup**:
-   - Install Alembic dependencies
-   - Initialize Alembic
-   - Configure alembic.ini and env.py
-   - Create initial migration
-   - Apply migration to database
+**For initial setup**:
+1. Install Alembic dependencies
+2. Initialize Alembic
+3. Configure alembic.ini and env.py
+4. Create initial migration
+5. Apply migration to database
 
-2. **For new migration**:
-   - Analyze required schema changes
-   - Create migration file (auto-generate or manual)
-   - Review and customize migration
-   - Test upgrade and downgrade
-   - Document any special considerations
+**For new migration**:
+1. Analyze required schema changes
+2. Create migration file (auto-generate or manual)
+3. Review and customize migration
+4. Test upgrade and downgrade
+5. Document any special considerations
 
 ## On Completion
 

@@ -18,13 +18,13 @@ Provides slash commands to ease the development process with GitHub integration:
 
 ### Backend Plugin
 
-Comprehensive toolkit for Python FastAPI backend development with modern tooling:
+Comprehensive toolkit for Python FastAPI backend development with modern tooling. This plugin provides **Skills** that Claude automatically invokes when you're working on backend tasks:
 
-- `/new-endpoint` - Create new FastAPI endpoints with proper structure and best practices
-- `/setup-project` - Initialize a FastAPI project with uv and workspace configuration
-- `/setup-tests` - Set up complete testing infrastructure with pytest
-- `/add-migration` - Create and manage database migrations with Alembic
-- `/add-docs` - Generate comprehensive API documentation with OpenAPI/Swagger
+- **fastapi-endpoint** - Creates FastAPI endpoints with Pydantic schemas, validation, and documentation
+- **fastapi-project** - Initializes FastAPI projects with uv, workspace configuration, and proper structure
+- **pytest-setup** - Sets up complete testing infrastructure with pytest, fixtures, and factories
+- **alembic-migration** - Creates and manages database migrations with Alembic
+- **api-documentation** - Generates comprehensive API documentation with OpenAPI/Swagger
 
 ## Installation
 
@@ -49,10 +49,9 @@ Comprehensive toolkit for Python FastAPI backend development with modern tooling
 
 ## Usage
 
-Once installed, plugins provide custom slash commands that can be invoked
-directly in Claude Code:
+### Development Plugin (Slash Commands)
 
-### Development Plugin Commands
+The development plugin provides slash commands that you invoke directly:
 
 ```bash
 /create-plan    # Start planning your feature
@@ -61,24 +60,18 @@ directly in Claude Code:
 /five-whys      # Perform root cause analysis
 ```
 
-### Backend Plugin Commands
+### Backend Plugin (Skills)
 
-```bash
-# Initialize a new FastAPI project
-/setup-project my-api-project
+The backend plugin provides **Skills** that Claude automatically uses when relevant. Simply describe what you want to do, and Claude will invoke the appropriate skill:
 
-# Create a new API endpoint
-/new-endpoint POST /users - create a new user
+**Examples:**
+- "Create a new POST endpoint for user registration" → Uses `fastapi-endpoint` skill
+- "Set up a new FastAPI project with uv" → Uses `fastapi-project` skill
+- "Add pytest testing to my project" → Uses `pytest-setup` skill
+- "Create a migration to add an email column" → Uses `alembic-migration` skill
+- "Improve my API documentation" → Uses `api-documentation` skill
 
-# Set up testing infrastructure
-/setup-tests
-
-# Create a database migration
-/add-migration create users table
-
-# Generate API documentation
-/add-docs
-```
+Skills are model-invoked, meaning Claude decides when to use them based on your request and the skill's description. You don't need to remember specific command names!
 
 ## Contributing
 

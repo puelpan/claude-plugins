@@ -1,14 +1,27 @@
+---
+name: api-documentation
+description: Enhances FastAPI applications with comprehensive API documentation including OpenAPI/Swagger UI, ReDoc, request/response examples, and authentication documentation. Use when the user needs to improve or set up API documentation.
+---
+
 # Setup API Documentation
 
 You are a Senior Technical Writer and API Developer with deep expertise in API documentation, OpenAPI/Swagger specifications, and FastAPI documentation features. You excel at creating comprehensive, user-friendly API documentation.
 
-## Instructions
+## When to Use This Skill
 
-Enhance or set up API documentation for a FastAPI application based on $ARGUMENTS.
+Invoke this skill when the user needs to:
+- Set up or enhance API documentation for a FastAPI application
+- Add OpenAPI/Swagger UI and ReDoc documentation
+- Document API endpoints with examples
+- Configure authentication documentation
+- Export OpenAPI specifications
+- Create API usage guides and examples
+
+## Instructions
 
 ### 1. Understand Requirements
 
-Parse requirements from $ARGUMENTS:
+Gather information about documentation needs:
 - Type of documentation needed (OpenAPI/Swagger UI, ReDoc, custom)
 - What needs to be documented (specific endpoints, all APIs, authentication)
 - Additional documentation (API guides, tutorials, examples)
@@ -127,26 +140,20 @@ router = APIRouter(prefix="/api/v1/users", tags=["users"])
 
 
 class UserCreate(BaseModel):
-    """
-    Schema for creating a new user.
-
-    Attributes:
-        email: User's email address (must be unique)
-        username: User's username (3-50 characters)
-        password: User's password (minimum 8 characters)
-    """
+    """Schema for creating a new user."""
     email: str
     username: str
     password: str
 
-    class Config:
-        json_schema_extra = {
-            "example": {
+    model_config = {
+        "json_schema_extra": {
+            "examples": [{
                 "email": "user@example.com",
                 "username": "johndoe",
                 "password": "securePassword123"
-            }
+            }]
         }
+    }
 
 
 class UserResponse(BaseModel):
@@ -156,15 +163,16 @@ class UserResponse(BaseModel):
     username: str
     is_active: bool
 
-    class Config:
-        json_schema_extra = {
-            "example": {
+    model_config = {
+        "json_schema_extra": {
+            "examples": [{
                 "id": 1,
                 "email": "user@example.com",
                 "username": "johndoe",
                 "is_active": True
-            }
+            }]
         }
+    }
 
 
 @router.post(
@@ -230,63 +238,6 @@ async def create_user(user: UserCreate):
     - **400**: Invalid input data
     - **409**: User with email/username already exists
     """
-    # Implementation here
-    pass
-
-
-@router.get(
-    "/{user_id}",
-    response_model=UserResponse,
-    summary="Get user by ID",
-    description="Retrieve a specific user by their unique identifier",
-    responses={
-        200: {"description": "User found"},
-        404: {"description": "User not found"},
-    }
-)
-async def get_user(
-    user_id: int = Path(..., description="The unique identifier of the user", ge=1)
-):
-    """
-    Retrieve a user by ID.
-
-    **Path Parameters:**
-    - **user_id**: User's unique identifier (must be positive integer)
-
-    **Returns:**
-    - User object if found
-    - 404 error if user doesn't exist
-    """
-    pass
-
-
-@router.get(
-    "/",
-    response_model=List[UserResponse],
-    summary="List all users",
-    description="Retrieve a paginated list of all users",
-)
-async def list_users(
-    skip: int = Query(0, ge=0, description="Number of records to skip"),
-    limit: int = Query(100, ge=1, le=1000, description="Maximum number of records to return"),
-    active_only: Optional[bool] = Query(None, description="Filter by active status")
-):
-    """
-    List all users with pagination.
-
-    **Query Parameters:**
-    - **skip**: Number of records to skip (default: 0)
-    - **limit**: Maximum records to return (default: 100, max: 1000)
-    - **active_only**: Filter by active users only
-
-    **Example Request:**
-    ```
-    GET /api/v1/users?skip=0&limit=10&active_only=true
-    ```
-
-    **Returns:**
-    List of user objects matching the criteria
-    """
     pass
 ```
 
@@ -335,11 +286,10 @@ async def get_current_user(
 
 ### 6. Create Example Request/Response Documentation
 
-**Add request/response examples in Pydantic models**:
+**Add examples in Pydantic models**:
 ```python
 from pydantic import BaseModel, Field
 from typing import Optional
-from datetime import datetime
 
 
 class ItemBase(BaseModel):
@@ -365,21 +315,17 @@ class ItemBase(BaseModel):
         examples=[999.99, 15.50, 2500.00]
     )
 
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "examples": [
                 {
                     "name": "MacBook Pro",
                     "description": "16-inch laptop with M3 chip",
                     "price": 2499.99
-                },
-                {
-                    "name": "Coffee Mug",
-                    "description": "Ceramic mug with company logo",
-                    "price": 12.99
                 }
             ]
         }
+    }
 ```
 
 ### 7. Export OpenAPI Specification
@@ -410,73 +356,7 @@ Run:
 uv run python scripts/export_openapi.py
 ```
 
-### 8. Add API Documentation Page
-
-**Create custom documentation page** (optional):
-```python
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
-
-app = FastAPI()
-
-# Mount static files for custom docs
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
-
-@app.get("/api-guide", response_class=HTMLResponse)
-async def api_guide():
-    """Serve custom API documentation page."""
-    return """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>API Documentation</title>
-        <link rel="stylesheet" href="/static/docs.css">
-    </head>
-    <body>
-        <h1>API Documentation</h1>
-        <p>Welcome to our API documentation.</p>
-        <ul>
-            <li><a href="/docs">Interactive API Docs (Swagger UI)</a></li>
-            <li><a href="/redoc">Alternative Docs (ReDoc)</a></li>
-            <li><a href="/openapi.json">OpenAPI Specification</a></li>
-        </ul>
-    </body>
-    </html>
-    """
-```
-
-### 9. Generate Markdown Documentation
-
-Install and use tools to generate markdown docs:
-```bash
-# Install openapi-generator or similar tool
-npm install -g @openapitools/openapi-generator-cli
-
-# Generate markdown docs
-openapi-generator-cli generate \
-  -i openapi.json \
-  -g markdown \
-  -o docs/api
-```
-
-### 10. Add Example Code Snippets
-
-**Create examples directory**:
-```
-docs/
-├── examples/
-│   ├── python/
-│   │   ├── create_user.py
-│   │   └── authenticate.py
-│   ├── javascript/
-│   │   ├── create_user.js
-│   │   └── authenticate.js
-│   └── curl/
-│       ├── create_user.sh
-│       └── authenticate.sh
-```
+### 8. Create Example Code Snippets
 
 **docs/examples/python/create_user.py**:
 ```python
@@ -527,23 +407,7 @@ curl -X POST "http://localhost:8000/api/v1/users/" \
   }'
 ```
 
-### 11. Add API Versioning Documentation
-
-Document API versions clearly:
-```python
-from fastapi import APIRouter
-
-# V1 API
-router_v1 = APIRouter(prefix="/api/v1")
-
-# V2 API with changes
-router_v2 = APIRouter(prefix="/api/v2")
-
-app.include_router(router_v1, tags=["v1"])
-app.include_router(router_v2, tags=["v2"])
-```
-
-### 12. Create README for API
+### 9. Create API Documentation README
 
 **docs/API_README.md**:
 ```markdown
