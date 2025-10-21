@@ -13,6 +13,15 @@
       "author": {
         "name": "Juan Puelpan"
       }
+    },
+    {
+      "name": "react-frontend",
+      "source": "./react-frontend",
+      "description": "React and frontend development tools with MCP integration for shadcn/ui and modern UI frameworks",
+      "version": "1.0.0",
+      "author": {
+        "name": "Juan Puelpan"
+      }
     }
   ]
 }
