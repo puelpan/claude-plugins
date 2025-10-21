@@ -11,7 +11,8 @@ complexity.
 - Understand the requirements based on $ARGUMENTS. If the argument is a github
   issue, use Github CLI to fetch the details.
 - ASK for more information about the requirements. Iterate for at least 5
-  questions to make sure you understand the requirement.
+  questions to make sure you understand the requirement. Use the Questions tool
+  to gather this information.
 - Analyze the code and build an implementation plan.
 - Divide the work in up to 5 tasks.
 - Prepare a well-structured description with markdown formatting
