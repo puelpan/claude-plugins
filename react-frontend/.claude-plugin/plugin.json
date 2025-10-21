@@ -1,0 +1,14 @@
+{
+  "name": "react-frontend",
+  "description": "React page creation with TanStack Router, TanStack Form, and shadcn/ui",
+  "version": "2.0.0",
+  "author": {
+    "name": "Juan Puelpan"
+  },
+  "mcpServers": {
+    "shadcn": {
+      "description": "shadcn/ui component library integration",
+      "required": false
+    }
+  }
+}

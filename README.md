@@ -15,6 +15,12 @@ Provides slash commands to ease the development process with GitHub integration:
 - `/create-pr` - Create pull requests with AI-generated descriptions
 - `/pr-review` - Review pull requests with detailed analysis
 
+### React Frontend Plugin
+
+React page creation with TanStack Router, TanStack Form, and shadcn/ui:
+
+- `create-page` skill - Expert guidance for creating pages with TanStack Router, TanStack Form, and shadcn/ui components
+
 ## Installation
 
 ### Add Marketplace
@@ -33,6 +39,7 @@ Provides slash commands to ease the development process with GitHub integration:
 
 ```bash
 /plugin install development
+/plugin install react-frontend
 ```
 
 ## Usage
@@ -40,11 +47,16 @@ Provides slash commands to ease the development process with GitHub integration:
 Once installed, plugins provide custom slash commands that can be invoked
 directly in Claude Code:
 
+### Development Commands
 ```bash
 /create-plan    # Start planning your feature
 /commit         # Create a contextual commit
 /create-pr      # Generate and create a PR
 ```
+
+### React Frontend Skills
+
+To use the `create-page` skill, invoke it in your conversation with Claude Code. The skill provides expert guidance for creating React pages using TanStack Router, TanStack Form, and shadcn/ui components.
 
 ## Contributing
 
