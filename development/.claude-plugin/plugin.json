@@ -1,7 +1,7 @@
 {
   "name": "development",
   "description": "Collection of claude commands to ease the development process with github issues, PRs and more",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Juan Puelpan"
   }
