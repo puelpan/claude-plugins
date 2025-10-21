@@ -17,14 +17,9 @@ Provides slash commands to ease the development process with GitHub integration:
 
 ### React Frontend Plugin
 
-React and frontend development tools with MCP integration for modern UI frameworks:
+React page creation with TanStack Router, TanStack Form, and shadcn/ui:
 
-- `/add-component` - Create new React components with shadcn/ui integration
-- `/setup-shadcn` - Set up shadcn/ui in your React project
-- `/add-page` - Create new pages with proper routing and SEO
-- `/optimize-component` - Optimize React components for performance
-- `/add-form` - Create forms with validation (React Hook Form + Zod)
-- `/setup-react-project` - Initialize a new React project with best practices
+- `create-page` skill - Expert guidance for creating pages with TanStack Router, TanStack Form, and shadcn/ui components
 
 ## Installation
 
@@ -59,15 +54,9 @@ directly in Claude Code:
 /create-pr      # Generate and create a PR
 ```
 
-### React Frontend Commands
-```bash
-/setup-react-project    # Initialize a new React project
-/setup-shadcn          # Set up shadcn/ui
-/add-component         # Create a new component
-/add-page             # Create a new page
-/add-form             # Create a form with validation
-/optimize-component    # Optimize component performance
-```
+### React Frontend Skills
+
+To use the `create-page` skill, invoke it in your conversation with Claude Code. The skill provides expert guidance for creating React pages using TanStack Router, TanStack Form, and shadcn/ui components.
 
 ## Contributing
 
