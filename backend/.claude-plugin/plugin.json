@@ -1,0 +1,8 @@
+{
+  "name": "backend",
+  "description": "Backend development toolkit for Python FastAPI projects with uv workspace management, API endpoint creation, and testing setup",
+  "version": "1.0.0",
+  "author": {
+    "name": "Juan Puelpan"
+  }
+}
