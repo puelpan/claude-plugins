@@ -14,6 +14,13 @@ Provides slash commands to ease the development process with GitHub integration:
 - `/commit` - Smart commit creation with context
 - `/create-pr` - Create pull requests with AI-generated descriptions
 - `/pr-review` - Review pull requests with detailed analysis
+- `/linter` - Run project linter and fix issues
+- `/five-whys` - Root cause analysis using the Five Whys technique
+
+#### Skills
+
+- `/web-automation` - Browser automation assistant with Chrome DevTools MCP for
+  creating and debugging web scrapers
 
 ## Installation
 
