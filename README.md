@@ -21,6 +21,8 @@ Provides slash commands to ease the development process with GitHub integration:
 
 - `/web-automation` - Browser automation assistant with Chrome DevTools MCP for
   creating and debugging web scrapers
+- `/c4-diagrams` - Generate C4 model architecture diagrams as PlantUML source,
+  derived from the codebase or a written description
 
 ## Installation
 
