@@ -7,18 +7,26 @@ workflows with enhanced Git, GitHub, and project management capabilities.
 
 ### Development Plugin
 
-Provides slash commands to ease the development process with GitHub integration:
+Eases the development process with GitHub integration through slash commands
+and skills.
+
+#### Commands
+
+Explicitly invoked with a slash command:
 
 - `/create-plan` - Generate structured development plans
 - `/execute-plan` - Execute planned development tasks
-- `/commit` - Smart commit creation with context
-- `/create-pr` - Create pull requests with AI-generated descriptions
 - `/pr-review` - Review pull requests with detailed analysis
-- `/linter` - Run project linter and fix issues
 - `/five-whys` - Root cause analysis using the Five Whys technique
 
 #### Skills
 
+Invoked explicitly with `/name`, or automatically when your request matches
+their purpose:
+
+- `/commit` - Create a conventional-style commit from the current changes
+- `/create-pr` - Create a branch, split logical commits, and open a PR
+- `/linter` - Run the project linter and fix the reported issues
 - `/web-automation` - Browser automation assistant with Chrome DevTools MCP for
   creating and debugging web scrapers
 - `/c4-diagrams` - Generate C4 model architecture diagrams as PlantUML source,
