@@ -20,11 +20,11 @@ GitHub issue. Please:
 - Commit and push your changes in a logical order when appropriate
 - Each commit focuses on a single logical change or feature
 - Creates descriptive commit messages for each logical unit
-- Ensure each commit can be understood independently following the rules at
-  @./commit.md
+- Ensure each commit can be understood independently following the rules in the
+  `commit` skill
 - Multiple unrelated changes should be split into separate commits
 - Creates pull request in Github with proper summary following the instructions
-  at @./create-pr.md
+  in the `create-pr` skill
 - Do NOT add Claude co-authorship to PR description or commit messages
 - Use Github CLI if necessary
 - Link the issue and the PR
