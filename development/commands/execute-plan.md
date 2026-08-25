@@ -10,6 +10,8 @@ GitHub issue. Please:
 - Fetch the GitHub issue using the issue number or URL provided in the arguments
 - Parse the plan from the issue description or comment.
 - Create an execution strategy with concrete implementation steps
+- Before doing any change, create a dedicated git worktree based on the main
+  branch
 - Generate concrete code and implementation steps
 - Create a new branch with a brief name using the conventional commit style as
   prefix (`feat/<branch-name>`, `fix/<branch-name>`, `docs/<branch-name>`, etc)
